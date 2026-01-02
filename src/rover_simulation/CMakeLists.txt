@@ -4,7 +4,7 @@ project(rover_simulation)
 find_package(ament_cmake REQUIRED)
 
 install(
-  DIRECTORY launch worlds
+  DIRECTORY launch config worlds
   DESTINATION share/${PROJECT_NAME}
 )
 

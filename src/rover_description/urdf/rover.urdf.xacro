@@ -3,10 +3,10 @@
 
   <!-- ================= BASE FRAMES ================= -->
 
-  <!-- Ground-projected frame used by Nav2 -->
+  <!-- Ground-projected frame (no roll/pitch) -->
   <link name="base_footprint"/>
 
-  <!-- Main physical body of the robot -->
+  <!-- Main robot body -->
   <link name="base_link">
     <visual>
       <geometry>
@@ -27,7 +27,7 @@
     </inertial>
   </link>
 
-  <!-- base_link is slightly above the ground -->
+  <!-- base_link sits above ground -->
   <joint name="base_joint" type="fixed">
     <parent link="base_footprint"/>
     <child link="base_link"/>
@@ -36,7 +36,6 @@
 
   <!-- ================= WHEELS ================= -->
 
-  <!-- Left wheel -->
   <link name="wheel_left">
     <visual>
       <geometry>
@@ -50,7 +49,6 @@
     </collision>
   </link>
 
-  <!-- Right wheel -->
   <link name="wheel_right">
     <visual>
       <geometry>
@@ -64,7 +62,7 @@
     </collision>
   </link>
 
-  <!-- Continuous joints allow wheel rotation -->
+  <!-- Continuous joints allow rotation -->
   <joint name="wheel_left_joint" type="continuous">
     <parent link="base_link"/>
     <child link="wheel_left"/>
@@ -81,7 +79,7 @@
 
   <!-- ================= SENSORS ================= -->
 
-  <!-- LiDAR frame -->
+  <!-- LiDAR -->
   <link name="lidar_link">
     <visual>
       <geometry>
@@ -96,7 +94,7 @@
     <origin xyz="0.2 0 0.15"/>
   </joint>
 
-  <!-- IMU frame -->
+  <!-- IMU -->
   <link name="imu_link"/>
   <joint name="imu_joint" type="fixed">
     <parent link="base_link"/>
@@ -104,7 +102,7 @@
     <origin xyz="0 0 0.1"/>
   </joint>
 
-  <!-- GPS frame -->
+  <!-- GPS -->
   <link name="gps_link"/>
   <joint name="gps_joint" type="fixed">
     <parent link="base_link"/>
@@ -114,23 +112,28 @@
 
   <!-- ================= GAZEBO PLUGINS ================= -->
 
-  <!-- Differential drive plugin -->
+  <!-- Differential drive controller -->
   <gazebo>
     <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
       <left_joint>wheel_left_joint</left_joint>
       <right_joint>wheel_right_joint</right_joint>
       <wheel_separation>0.4</wheel_separation>
       <wheel_radius>0.1</wheel_radius>
+
       <cmd_vel_topic>/cmd_vel</cmd_vel_topic>
       <odom_topic>/odom</odom_topic>
+
       <publish_odom>true</publish_odom>
       <publish_tf>true</publish_tf>
+      <publish_cmd>true</publish_cmd>
+      <publish_wheel_tf>false</publish_wheel_tf>
+
       <odometry_frame>odom</odometry_frame>
       <robot_base_frame>base_footprint</robot_base_frame>
     </plugin>
   </gazebo>
 
-  <!-- LiDAR sensor plugin -->
+  <!-- LiDAR plugin -->
   <gazebo reference="lidar_link">
     <sensor type="ray" name="lidar">
       <update_rate>10</update_rate>
@@ -154,7 +157,7 @@
     </sensor>
   </gazebo>
 
-  <!-- IMU sensor plugin -->
+  <!-- IMU plugin -->
   <gazebo reference="imu_link">
     <sensor type="imu" name="imu">
       <plugin name="imu_plugin" filename="libgazebo_ros_imu_sensor.so">
@@ -164,7 +167,7 @@
     </sensor>
   </gazebo>
 
-  <!-- GPS sensor plugin -->
+  <!-- GPS plugin -->
   <gazebo reference="gps_link">
     <sensor type="gps" name="gps">
       <plugin name="gps_plugin" filename="libgazebo_ros_gps_sensor.so">

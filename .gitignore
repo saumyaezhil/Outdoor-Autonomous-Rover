@@ -3,15 +3,19 @@ build/
 install/
 log/
 
+# ROS runtime
+.ros/
+
 # Gazebo cache
-~/.gazebo/
+.gazebo/
+
+# Python cache
+__pycache__/
+*.pyc
 
 # VS Code
 .vscode/
 
-# Python
-__pycache__/
-*.pyc
-
-# OS
-.DS_Store
+# Maps (optional)
+maps/*.pgm
+maps/*.yaml
