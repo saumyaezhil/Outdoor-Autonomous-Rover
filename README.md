@@ -3,10 +3,14 @@
 This repository contains a simulation-based outdoor autonomous rover built using **ROS 2 Humble** and **Gazebo**.
 
 ## Current Features
-- Custom rover URDF with proper TF tree
-- Differential drive rover
-- Simulated LiDAR sensor
-- Gazebo outdoor world
-- ROS 2 launch-based architecture
+- Gazebo simulation of outdoor rover
+- Differential drive control
+- LiDAR, IMU, GPS sensors
+- EKF sensor fusion (robot_localization)
+- SLAM Toolbox mapping
+
+## Quick Run (Simulation)
+```bash
+ros2 launch rover_simulation bringup.launch.py
 
 -- in progress --
