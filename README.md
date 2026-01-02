@@ -9,8 +9,4 @@ This repository contains a simulation-based outdoor autonomous rover built using
 - EKF sensor fusion (robot_localization)
 - SLAM Toolbox mapping
 
-## Quick Run (Simulation)
-```bash
-ros2 launch rover_simulation bringup.launch.py
-
 -- in progress --
