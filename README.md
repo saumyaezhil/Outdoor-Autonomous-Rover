@@ -1,12 +1,13 @@
-# Outdoor Autonomous Rover (ROS 2)
+# Outdoor Autonomous Rover
 
-This repository contains a simulation-based outdoor autonomous rover built using **ROS 2 Humble** and **Gazebo**.
+## Status
+✅ Diff-drive rover
+✅ ros2_control integrated
+✅ diff_drive_controller running
+✅ Odometry published on /diff_drive_controller/odom
 
-## Current Features
-- Gazebo simulation of outdoor rover
-- Differential drive control
-- LiDAR, IMU, GPS sensors
-- EKF sensor fusion (robot_localization)
-- SLAM Toolbox mapping
-
--- in progress --
+## How to Run
+```bash
+colcon build --symlink-install
+source install/setup.bash
+ros2 launch rover_simulation control_only.launch.py

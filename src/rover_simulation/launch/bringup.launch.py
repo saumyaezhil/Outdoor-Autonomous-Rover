@@ -30,7 +30,15 @@ def generate_launch_description():
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
+                os.path.join(pkg, 'launch', 'nav2.launch.py')
+            )
+        ),
+
+
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
                 os.path.join(pkg, 'launch', 'slam.launch.py')
             )
         )
+        
     ])

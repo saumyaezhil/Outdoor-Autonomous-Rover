@@ -2,57 +2,62 @@ from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
-from launch.substitutions import Command
 from ament_index_python.packages import get_package_share_directory
 import os
 
 def generate_launch_description():
 
-    gazebo_launch = IncludeLaunchDescription(
+    gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory('gazebo_ros'),
-                'launch',
-                'gazebo.launch.py'
+                get_package_share_directory("gazebo_ros"),
+                "launch",
+                "gazebo.launch.py"
             )
-        ),
-        launch_arguments={
-            'world': os.path.join(
-                get_package_share_directory('rover_simulation'),
-                'worlds',
-                'outdoor.world'
-            )
-        }.items()
+        )
     )
 
-    urdf = os.path.join(
-        get_package_share_directory('rover_description'),
-        'urdf',
-        'rover.urdf.xacro'
+    urdf_path = os.path.join(
+        get_package_share_directory("rover_description"),
+        "urdf",
+        "rover.urdf"
+    )
+
+    controllers = os.path.join(
+        get_package_share_directory("rover_simulation"),
+        "config",
+        "controllers.yaml"
     )
 
     return LaunchDescription([
 
-        # Start Gazebo WITH ROS factory (guaranteed)
-        gazebo_launch,
+        gazebo,
 
-        # Publish robot TF
         Node(
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            parameters=[{
-                'robot_description': Command(['xacro ', urdf])
-            }]
+            package="robot_state_publisher",
+            executable="robot_state_publisher",
+            parameters=[{"robot_description": open(urdf_path).read()}]
         ),
 
-        # Spawn robot into Gazebo
+        # IMPORTANT: controllers are loaded INTO Gazebo's controller_manager
         Node(
-            package='gazebo_ros',
-            executable='spawn_entity.py',
-            arguments=[
-                '-topic', 'robot_description',
-                '-entity', 'outdoor_rover'
-            ],
-            output='screen'
+            package="controller_manager",
+            executable="spawner",
+            arguments=["joint_state_broadcaster"],
+            parameters=[controllers]
+        ),
+
+        Node(
+            package="controller_manager",
+            executable="spawner",
+            arguments=["diff_drive_controller"],
+            parameters=[controllers]
+        ),
+
+        Node(
+            package="gazebo_ros",
+            executable="spawn_entity.py",
+            arguments=["-entity", "rover", "-file", urdf_path],
+            output="screen"
         )
     ])
