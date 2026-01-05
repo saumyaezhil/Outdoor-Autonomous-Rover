@@ -11,3 +11,6 @@ To build it, just run `colcon build --symlink-install` in your workspace. You ca
 What's missing is pretty much everything above the control layer. No teleoperation yet, no Nav2, no sensors, no localization. I'll add teleoperation next so I can drive it around manually and validate the control response, then integrate a lidar, then build out the Nav2 stack. Visual meshes might come later if there's a reason for them, but right now they'd just be cosmetic.
 
 The point is to have a stable foundation where each layer actually works before adding the next one. Too many robotics projects try to do everything at once and end up debugging navigation when the real problem is that the wheels aren't spinning right.
+
+
+---- In Progress ----
